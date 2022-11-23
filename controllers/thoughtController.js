@@ -34,8 +34,8 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
   // Delete a thought
-  deleteUser(req, res) {
-    Thought.findOneAndRemove({ _id: req.params.userId })
+  deleteThought(req, res) {
+    Thought.findOneAndRemove({ _id: req.params.thoughtId })
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: 'No such thought exists' })
@@ -47,9 +47,9 @@ module.exports = {
       });
   },
 
-  // Add a friend
-  addFriend(req, res) {
-    console.log('You are adding a friend');
+  // Add a reaction
+  addReaction(req, res) {
+    console.log('You are adding a reaction');
     console.log(req.body);
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
@@ -65,11 +65,11 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove thought
-  removeThought(req, res) {
+  // update thought
+  updateThought(req, res) {
     Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { _id: req.params.thoughtId } },
+      { $set: req.body },
       { runValidators: true, new: true }
     )
       .then((thought) =>
